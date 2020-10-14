@@ -10,8 +10,8 @@ class FundaSpider(CrawlSpider):
     allowed_domains = ["funda.nl"]
 
     def __init__(self, place='amsterdam'):
-        self.start_urls = ["http://www.funda.nl/koop/%s/p%s/" % (place, page_number) for page_number in range(1,301)]
-        self.base_url = "http://www.funda.nl/koop/%s/" % place
+        self.start_urls = ["https://www.funda.nl/koop/%s/p%s/" % (place, page_number) for page_number in range(1,301)]
+        self.base_url = "https://www.funda.nl/koop/%s/" % place
         self.le1 = LinkExtractor(allow=r'%s+(huis|appartement)-\d{8}' % self.base_url)
 
     def parse(self, response):
@@ -36,7 +36,7 @@ class FundaSpider(CrawlSpider):
         price = re.findall(r' \d+.\d+', price_dd)[0].strip().replace('.','')
         year_built_dd = response.xpath("//dt[contains(.,'Bouwjaar')]/following-sibling::dd[1]/text()").extract()[0]
         year_built = re.findall(r'\d+', year_built_dd)[0]
-        area_dd = response.xpath("//dt[contains(.,'Woonoppervlakte')]/following-sibling::dd[1]/text()").extract()[0]
+        area_dd = response.xpath("//dt[contains(.,'Wonen')]/following-sibling::dd[1]/text()").extract()[0]
         area = re.findall(r'\d+', area_dd)[0]
         rooms_dd = response.xpath("//dt[contains(.,'Aantal kamers')]/following-sibling::dd[1]/text()").extract()[0]
         rooms = re.findall('\d+ kamer',rooms_dd)[0].replace(' kamer','')
